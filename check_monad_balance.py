@@ -1,0 +1,53 @@
+import os
+import requests
+
+MONAD_RPC_URL = os.getenv("MONAD_RPC_URL")
+WALLET_ADDRESS = os.getenv("WALLET_ADDRESS")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+THRESHOLD = float(os.getenv("THRESHOLD", "10"))  # Seuil par défaut 10 monad
+
+def get_wallet_balance(address):
+    # Exemple simple JSON-RPC request, à adapter selon l’API réelle Monad
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "getBalance",
+        "params": [address],
+        "id": 1
+    }
+    try:
+        response = requests.post(MONAD_RPC_URL, json=payload)
+        response.raise_for_status()
+        result = response.json()
+        # Supposons que la balance est en `result['result']['balance']` en nano-monad (1 Monad = 1e9 nano)
+        balance_nano = int(result['result']['balance'])
+        balance = balance_nano / 1_000_000_000
+        return balance
+    except Exception as e:
+        print(f"Erreur en récupérant le solde: {e}")
+        return None
+
+def send_telegram_message(bot_token, chat_id, message):
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    data = {"chat_id": chat_id, "text": message}
+    try:
+        resp = requests.post(url, data=data)
+        resp.raise_for_status()
+        print("Message Telegram envoyé.")
+    except Exception as e:
+        print(f"Erreur en envoyant Telegram: {e}")
+
+def main():
+    balance = get_wallet_balance(WALLET_ADDRESS)
+    if balance is None:
+        print("Impossible d’obtenir le solde.")
+        return
+    print(f"Solde du wallet {WALLET_ADDRESS} : {balance} Monad")
+    if balance > THRESHOLD:
+        msg = f"Le solde du wallet {WALLET_ADDRESS} a dépassé le seuil : {balance} Monad"
+        send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
+    else:
+        print("Seuil non dépassé, rien à faire.")
+
+if __name__ == "__main__":
+    main()

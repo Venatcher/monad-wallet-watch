@@ -1,0 +1,31 @@
+name: Check Monad Wallet Balance
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'  # toutes les 15 minutes
+  workflow_dispatch:
+
+jobs:
+  check_balance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run balance check script
+        env:
+          MONAD_RPC_URL: ${{ secrets.MONAD_RPC_URL }}
+          WALLET_ADDRESS: ${{ secrets.WALLET_ADDRESS }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          THRESHOLD: ${{ secrets.THRESHOLD }}
+        run: python check_monad_balance.py
