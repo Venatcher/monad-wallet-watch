@@ -48,10 +48,11 @@ def main():
         return
     print(f"Solde du wallet {WALLET_ADDRESS} : {balance} Monad")
     if balance > THRESHOLD:
-        msg = f"Le solde du wallet {WALLET_ADDRESS} a dépassé le seuil : {balance} Monad"
+        msg = f"Le solde du wallet a dépassé le seuil : {balance} Monad"
         send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
     else:
-        print("Seuil non dépassé, rien à faire.")
+        msg = f"Le solde du wallet n'a pas dépassé le seuil : {balance} Monad"
+        send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
 
 if __name__ == "__main__":
     main()
