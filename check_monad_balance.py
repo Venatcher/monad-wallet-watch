@@ -11,7 +11,7 @@ def get_wallet_balance(address):
     # Exemple simple JSON-RPC request, à adapter selon l’API réelle Monad
     payload = {
         "jsonrpc": "2.0",
-        "method": "getBalance",
+        "method": "eth_getBalance",
         "params": [address],
         "id": 1
     }
