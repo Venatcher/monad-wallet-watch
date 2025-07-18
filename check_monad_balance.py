@@ -19,11 +19,11 @@ def get_wallet_balance(address):
         response = requests.post(MONAD_RPC_URL, json=payload)
         response.raise_for_status()
         data = response.json()
-        print("Réponse JSON brute :", data)  # 👈 Ajout pour débug
+        print("Réponse JSON brute :", data)
         if 'result' in data:
-            balance_nano = int(data['result']['balance'])  # à adapter selon la structure réelle
-            balance = balance_nano / 1_000_000_000
-            return balance
+            balance_wei = int(data['result'], 16)
+            balance_monad = balance_wei / 1e18  # conversion Wei -> Monad
+            return balance_monad
         else:
             print("Clé 'result' manquante dans la réponse.")
             return None
