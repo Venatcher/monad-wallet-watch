@@ -2,7 +2,7 @@ name: Check Monad Wallet Balance
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # toutes les 15 minutes
+    - cron: '*/60 * * * *'  # toutes les 60 minutes
   workflow_dispatch:
 
 jobs:

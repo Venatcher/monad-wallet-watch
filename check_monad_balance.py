@@ -12,7 +12,7 @@ def get_wallet_balance(address):
     payload = {
         "jsonrpc": "2.0",
         "method": "eth_getBalance",
-        "params": [address],
+        "params": [address, "latest"],
         "id": 1
     }
     try:
