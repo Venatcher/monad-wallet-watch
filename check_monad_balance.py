@@ -18,11 +18,15 @@ def get_wallet_balance(address):
     try:
         response = requests.post(MONAD_RPC_URL, json=payload)
         response.raise_for_status()
-        result = response.json()
-        # Supposons que la balance est en `result['result']['balance']` en nano-monad (1 Monad = 1e9 nano)
-        balance_nano = int(result['result']['balance'])
-        balance = balance_nano / 1_000_000_000
-        return balance
+        data = response.json()
+        print("Réponse JSON brute :", data)  # 👈 Ajout pour débug
+        if 'result' in data:
+            balance_nano = int(data['result']['balance'])  # à adapter selon la structure réelle
+            balance = balance_nano / 1_000_000_000
+            return balance
+        else:
+            print("Clé 'result' manquante dans la réponse.")
+            return None
     except Exception as e:
         print(f"Erreur en récupérant le solde: {e}")
         return None
