@@ -51,8 +51,7 @@ def main():
         msg = f"Le solde du wallet a dépassé le seuil : {balance} Monad"
         send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
     else:
-        msg = f"Le solde du wallet n'a pas dépassé le seuil : {balance} Monad"
-        send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
+        print("Seuil non dépassé, rien à faire.")
 
 if __name__ == "__main__":
     main()
