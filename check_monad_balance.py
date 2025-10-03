@@ -46,7 +46,7 @@ def main():
     if balance is None:
         print("Impossible d’obtenir le solde.")
         return
-    print(f"Solde du wallet {WALLET_ADDRESS} : {balance} Monad")
+    print(f"Solde du wallet {WALLET_ADDRESS} : {balance} $MON")
     if balance > THRESHOLD:
         msg = f"Le solde du wallet a dépassé le seuil : {balance} $MON"
         send_telegram_message(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, msg)
